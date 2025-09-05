@@ -1,0 +1,7 @@
+<label>PMID</label>
+<input #pmidInput />
+<button (click)="search(pmidInput.value)">Buscar</button>
+<div>
+  <p>Respuesta</p>
+  <p [innerHTML]="response()"></p>
+</div>

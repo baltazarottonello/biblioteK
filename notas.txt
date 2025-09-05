@@ -1,0 +1,5 @@
+API KEY: dc9ce7c0a769764b529867db592d42cfcf08
+
+BASE URL: https://eutils.ncbi.nlm.nih.gov/entrez/eutils/
+
+https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=39862138&api_key=dc9ce7c0a769764b529867db592d42cfcf08
