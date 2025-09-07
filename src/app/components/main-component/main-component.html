@@ -1,7 +1,18 @@
-<label>PMID</label>
+<!-- <label>PMID</label>
 <input #pmidInput />
 <button (click)="search(pmidInput.value)">Buscar</button>
 <div>
   <p>Respuesta</p>
   <p [innerHTML]="response()"></p>
-</div>
+</div> -->
+<mat-grid-list cols="3" rowHeight="10dvh">
+  <mat-grid-tile>
+    <nav>
+      <button matButton="elevated" routerLink="pubmed">
+        Utilidades PubMed
+      </button>
+    </nav>
+  </mat-grid-tile>
+</mat-grid-list>
+
+<router-outlet></router-outlet>
