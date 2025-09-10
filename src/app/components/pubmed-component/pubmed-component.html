@@ -1,1 +1,20 @@
-<p>pubmed-component works!</p>
+<header>
+  <label for="fileInput">Archivo .csv con ID's </label>
+
+  <input (change)="readFile($event)" type="file" id="fileInput" accept=".csv" />
+
+  <label for="convertFileInput">Convertir a CSV</label>
+
+  <textarea #toCsvData id="convertFileInput"></textarea>
+
+  <button (click)="toCsv(toCsvData.value)">Convertir</button>
+
+  <button
+    [class.visible]="showDownloadCsvButton()"
+    class="hidden"
+    (click)="downloadCsv()"
+  >
+    <a #downloadCsvLink class="hidden"></a>
+    Descargar .csv
+  </button>
+</header>

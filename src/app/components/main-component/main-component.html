@@ -5,14 +5,14 @@
   <p>Respuesta</p>
   <p [innerHTML]="response()"></p>
 </div> -->
-<mat-grid-list cols="3" rowHeight="10dvh">
-  <mat-grid-tile>
-    <nav>
-      <button matButton="elevated" routerLink="pubmed">
-        Utilidades PubMed
-      </button>
-    </nav>
-  </mat-grid-tile>
-</mat-grid-list>
-
-<router-outlet></router-outlet>
+<mat-sidenav-container [hasBackdrop]="true">
+  <mat-sidenav-content>
+    <button class="toggle-btn" matFab (click)="sideNav.toggle()">
+      <mat-icon fontSet="material-icons-round">menu</mat-icon>
+    </button>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+  <mat-sidenav #sideNav>
+    <button matButton="elevated" routerLink="pubmed">Utilidades PubMed</button>
+  </mat-sidenav>
+</mat-sidenav-container>

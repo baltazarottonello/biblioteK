@@ -8,10 +8,20 @@ import {
 import { Router, RouterLink, RouterOutlet } from "@angular/router";
 import { MatButtonModule } from "@angular/material/button";
 import { MatGridListModule } from "@angular/material/grid-list";
+import { MatSidenavModule } from "@angular/material/sidenav";
+import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatIconModule } from "@angular/material/icon";
 
 @Component({
   selector: "app-main-component",
-  imports: [RouterOutlet, RouterLink, MatButtonModule, MatGridListModule],
+  imports: [
+    RouterOutlet,
+    RouterLink,
+    MatButtonModule,
+    MatGridListModule,
+    MatSidenavModule,
+    MatIconModule,
+  ],
   templateUrl: "./main-component.html",
   styleUrl: "./main-component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -52,4 +62,10 @@ export class MainComponent {
   //       error: (err) => console.error(err),
   //     });
   // }
+
+  navOpen = signal(false);
+
+  toggleNav() {
+    this.navOpen.update(() => (this.navOpen() ? false : true));
+  }
 }

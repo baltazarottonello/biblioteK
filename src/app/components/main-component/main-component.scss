@@ -7,7 +7,20 @@
   padding: 1rem;
 }
 
-nav {
+mat-sidenav-container,
+mat-sidenav-content,
+mat-sidenav {
+  height: 100%;
+}
+
+mat-sidenav {
   display: flex;
-  justify-content: center;
+  width: fit-content;
+  padding: 1rem 1rem 0 0;
+  flex-direction: column;
+  border-radius: 0;
+}
+
+.toggle-btn {
+  position: absolute;
 }
