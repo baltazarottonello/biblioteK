@@ -1,4 +1,5 @@
 import { isPlatformBrowser } from "@angular/common";
+import { HttpClient } from "@angular/common/http";
 import {
   ChangeDetectionStrategy,
   Component,
@@ -20,17 +21,18 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PubmedComponent {
+  http = inject(HttpClient);
   downloadCsvLink = viewChild<ElementRef>("downloadCsvLink");
   showDownloadCsvButton = signal(false);
   renderer = inject(Renderer2);
   ids = signal("");
+  articlesSet = signal<Document | null>(null);
   async readFile(e: Event) {
     const inputElement = e.target as HTMLInputElement;
     const fileList = inputElement.files as FileList;
     const [file] = fileList;
     file.text().then((data: string) => {
       this.ids.set(data);
-      console.log(this.ids());
     });
   }
 
@@ -58,5 +60,25 @@ export class PubmedComponent {
 
   downloadCsv() {
     this.downloadCsvLink()?.nativeElement.click();
+  }
+
+  //TODO: if more than about 200 UIDs are to be provided, the request should be made using the HTTP POST method.
+  searchPmid(pmid: string) {
+    const link = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=${pmid}&retmode=xml`;
+    this.http.get(link, { responseType: "text" }).subscribe((res: any) => {
+      const domParser = new DOMParser();
+      const xml = domParser.parseFromString(res, "text/xml");
+      this.articlesSet.set(xml);
+      this.formatArticleSet();
+    });
+  }
+
+  private formatArticleSet() {
+    const articlesArray = [];
+    const articles = this.articlesSet()?.querySelectorAll("PubmedArticle")!;
+    for (let [_, value] of articles.entries()) {
+      articlesArray.push(value);
+    }
+    console.log(articlesArray);
   }
 }
