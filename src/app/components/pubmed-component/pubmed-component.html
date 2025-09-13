@@ -17,4 +17,8 @@
     <a #downloadCsvLink class="hidden"></a>
     Descargar .csv
   </button>
+
+  <label for="pmid">PMID</label>
+  <input #pmidInput id="pmid" />
+  <button matButton (click)="searchPmid(pmidInput.value)">Buscar</button>
 </header>
