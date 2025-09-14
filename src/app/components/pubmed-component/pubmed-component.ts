@@ -12,6 +12,8 @@ import {
   ViewChild,
   viewChild,
 } from "@angular/core";
+import { PubMedArticle } from "../../types/pubmedArticle";
+import { PubMedService } from "../../services/pubMedService.service";
 
 @Component({
   selector: "app-pubmed-component",
@@ -21,7 +23,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PubmedComponent {
-  http = inject(HttpClient);
+  pubmedService = inject(PubMedService);
   downloadCsvLink = viewChild<ElementRef>("downloadCsvLink");
   showDownloadCsvButton = signal(false);
   renderer = inject(Renderer2);
@@ -64,29 +66,46 @@ export class PubmedComponent {
 
   //TODO: if more than about 200 UIDs are to be provided, the request should be made using the HTTP POST method.
   searchPmid(pmid: string) {
-    this.http.get(".netlify/functions/articles").subscribe({
+    this.pubmedService.getArticles(pmid).subscribe({
       next: (res: any) => {
-        console.log(res);
+        const domParser = new DOMParser();
+        const xml = domParser.parseFromString(res, "text/xml");
+        this.articlesSet.set(xml);
+        this.formatArticleSet();
       },
-      error: (err) => {
-        console.error(err);
-      },
-    });
-    const link = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=${pmid}&retmode=xml`;
-    this.http.get(link, { responseType: "text" }).subscribe((res: any) => {
-      const domParser = new DOMParser();
-      const xml = domParser.parseFromString(res, "text/xml");
-      this.articlesSet.set(xml);
-      this.formatArticleSet();
+      error: (e) => console.error(e),
     });
   }
 
   private formatArticleSet() {
-    const articlesArray = [];
-    const articles = this.articlesSet()?.querySelectorAll("PubmedArticle")!;
-    for (let [_, value] of articles.entries()) {
-      articlesArray.push(value);
+    const articleSet = this.articlesSet()?.querySelectorAll("PubmedArticle")!;
+    const articlesXml = [];
+    const articles: PubMedArticle[] = [];
+    for (let [_, value] of articleSet.entries()) {
+      articlesXml.push(value);
     }
-    console.log(articlesArray);
+
+    for (let [_, value] of articlesXml.entries()) {
+      const pmid = parseInt(value.querySelector("PMID")?.innerHTML!);
+      const title = value.querySelector("ArticleTitle")?.innerHTML!;
+      const year = parseInt(
+        value.querySelector("DateRevised")!.querySelector("Year")?.innerHTML!
+      );
+      const status = value
+        .querySelector("MedlineCitation")
+        ?.attributes.getNamedItem("Status")?.value!;
+      const article = {
+        pmid,
+        title,
+        year,
+        status,
+      };
+      articles.push(article);
+    }
+
+    this.pubmedService.createArticle(articles).subscribe({
+      next: (res: any) => console.log(res),
+      error: (e) => console.error(e),
+    });
   }
 }
