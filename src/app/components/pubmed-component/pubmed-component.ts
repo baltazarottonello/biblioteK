@@ -64,6 +64,14 @@ export class PubmedComponent {
 
   //TODO: if more than about 200 UIDs are to be provided, the request should be made using the HTTP POST method.
   searchPmid(pmid: string) {
+    this.http.get(".netlify/functions/articles").subscribe({
+      next: (res: any) => {
+        console.log(res);
+      },
+      error: (err) => {
+        console.error(err);
+      },
+    });
     const link = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=${pmid}&retmode=xml`;
     this.http.get(link, { responseType: "text" }).subscribe((res: any) => {
       const domParser = new DOMParser();
