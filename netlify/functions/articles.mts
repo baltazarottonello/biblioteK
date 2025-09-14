@@ -3,15 +3,24 @@ import { supabase } from "./db.mjs";
 
 export default async (req: Request, context: Context) => {
   try {
-    if (req.method === "GET") {
-      const supabaseResponse = supabase.from("pubmed_articles").select("*");
+    if (req.method === "POST") {
+      const body = await req.json();
 
-      return new Response(JSON.stringify("OK"), {
+      const supabaseResponse = await supabase
+        .from("pubmed_articles")
+        .insert(body);
+
+      if (supabaseResponse.error) {
+        throw new Error(supabaseResponse.error.message);
+      }
+
+      return new Response(JSON.stringify(body), {
         status: 200,
       });
     }
   } catch (e: any) {
-    return new Response(null, {
+    console.log(e);
+    return new Response(e.message, {
       status: e.status ?? 500,
     });
   }
