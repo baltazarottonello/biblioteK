@@ -1,24 +1,61 @@
-<header>
-  <label for="fileInput">Archivo .csv con ID's </label>
+<header></header>
+<div class="articles-section-container">
+  <section class="csv-section section">
+    <header>
+      @if(!csvUploaded()){
+      <h3>Cargar archivo .csv</h3>
+      } @else {
+      <h3>Archivo cargado</h3>
+      }
+    </header>
+    <div>
+      @if(!csvUploaded()){
+      <input (change)="readFile($event)" type="file" accept=".csv" />
+      } @else {
+      <button matButton="elevated">Buscar artículos</button>
+      }
+    </div>
 
-  <input (change)="readFile($event)" type="file" id="fileInput" accept=".csv" />
+    <h3>O convertir a .csv una lista de ID's</h3>
+    <mat-form-field>
+      <mat-label for="convertFileInput">Convertir a CSV</mat-label>
 
-  <label for="convertFileInput">Convertir a CSV</label>
-
-  <textarea #toCsvData id="convertFileInput"></textarea>
-
-  <button (click)="toCsv(toCsvData.value)">Convertir</button>
-
-  <button
-    [class.visible]="showDownloadCsvButton()"
-    class="hidden"
-    (click)="downloadCsv()"
-  >
-    <a #downloadCsvLink class="hidden"></a>
-    Descargar .csv
-  </button>
-
-  <label for="pmid">PMID</label>
-  <input #pmidInput id="pmid" />
-  <button matButton (click)="searchPmid(pmidInput.value)">Buscar</button>
-</header>
+      <input
+        [formControl]="toCsvFormControl"
+        matInput
+        #toCsvData
+        id="convertFileInput"
+      />
+      @if(toCsvFormControl.hasError("required")){
+      <mat-error>No hay datos</mat-error>
+      }
+    </mat-form-field>
+    @if(!csvConverted()){
+    <button matButton="elevated" (click)="toCsv(toCsvData.value)">
+      Convertir
+    </button>
+    }
+    <button
+      matButton="elevated"
+      [class.visible]="showDownloadCsvButton()"
+      class="hidden"
+      (click)="downloadCsv()"
+    >
+      <a #downloadCsvLink class="hidden"></a>
+      Descargar .csv
+    </button>
+  </section>
+  <section class="pmid-section section">
+    <header><h3>PMID</h3></header>
+    <mat-form-field>
+      <mat-label for="pmid">PMID</mat-label>
+      <input [formControl]="pmidFormControl" matInput #pmidInput id="pmid" />
+      @if(pmidFormControl.hasError('required')){
+      <mat-error>PMID obligatorio</mat-error>
+      }
+    </mat-form-field>
+    <button matButton="elevated" (click)="searchPmid(pmidInput.value)">
+      Buscar
+    </button>
+  </section>
+</div>

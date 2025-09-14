@@ -14,10 +14,25 @@ import {
 } from "@angular/core";
 import { PubMedArticle } from "../../types/pubmedArticle";
 import { PubMedService } from "../../services/pubMedService.service";
+import { MatInputModule } from "@angular/material/input";
+import { MatButtonModule } from "@angular/material/button";
+import {
+  ReactiveFormsModule,
+  FormsModule,
+  FormControl,
+  Validators,
+} from "@angular/forms";
+import { MatFormFieldModule } from "@angular/material/form-field";
 
 @Component({
   selector: "app-pubmed-component",
-  imports: [],
+  imports: [
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+  ],
   templateUrl: "./pubmed-component.html",
   styleUrl: "./pubmed-component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -29,16 +44,27 @@ export class PubmedComponent {
   renderer = inject(Renderer2);
   ids = signal("");
   articlesSet = signal<Document | null>(null);
+  csvUploaded = signal(false);
+  csvConverted = signal(false);
+
+  pmidFormControl = new FormControl("", [Validators.required]);
+  toCsvFormControl = new FormControl("", [Validators.required]);
+
   async readFile(e: Event) {
     const inputElement = e.target as HTMLInputElement;
     const fileList = inputElement.files as FileList;
     const [file] = fileList;
     file.text().then((data: string) => {
       this.ids.set(data);
+      this.csvUploaded.set(true);
     });
   }
 
   toCsv(data: any) {
+    if (this.toCsvFormControl.invalid) {
+      this.toCsvFormControl.markAsTouched();
+      return;
+    }
     const formattedData = data.replaceAll(" ", "\n").split("\n").join(",");
 
     const blob = new Blob([formattedData], {
@@ -58,6 +84,7 @@ export class PubmedComponent {
       "datos.csv"
     );
     this.showDownloadCsvButton.set(true);
+    this.csvConverted.set(true);
   }
 
   downloadCsv() {
@@ -66,6 +93,10 @@ export class PubmedComponent {
 
   //TODO: if more than about 200 UIDs are to be provided, the request should be made using the HTTP POST method.
   searchPmid(pmid: string) {
+    if (this.pmidFormControl.invalid) {
+      this.pmidFormControl.markAsTouched();
+      return;
+    }
     this.pubmedService.getArticles(pmid).subscribe({
       next: (res: any) => {
         const domParser = new DOMParser();

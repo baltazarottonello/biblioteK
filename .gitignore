@@ -38,6 +38,7 @@ testem.log
 /typings
 *.txt
 *.env
+.angular
 
 # System files
 .DS_Store
