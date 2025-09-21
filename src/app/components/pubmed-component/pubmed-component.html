@@ -12,7 +12,13 @@
       @if(!csvUploaded()){
       <input (change)="readFile($event)" type="file" accept=".csv" />
       } @else {
-      <button matButton="elevated">Buscar artículos</button>
+      <button
+        [disabled]="loading()"
+        (click)="searchPmid(ids())"
+        matButton="elevated"
+      >
+        Buscar artículos
+      </button>
       }
     </div>
 
