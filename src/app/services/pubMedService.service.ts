@@ -1,4 +1,4 @@
-import { inject, Injectable } from "@angular/core";
+import { inject, Injectable, signal } from "@angular/core";
 import { PubMedArticle } from "../types/pubmedArticle";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
@@ -7,11 +7,14 @@ import { Observable } from "rxjs";
   providedIn: "root",
 })
 export class PubMedService {
+  ready = signal(false);
   http = inject(HttpClient);
 
-  getArticles(pmid: string) {
+  getArticles(pmid: string, qty = 1) {
     const link = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=${pmid}&retmode=xml`;
-    return this.http.get(link, { responseType: "text" });
+    return qty < 200
+      ? this.http.get(link, { responseType: "text" })
+      : this.http.post(link, { responseType: "text" });
   }
 
   createArticle(articles: PubMedArticle[]) {

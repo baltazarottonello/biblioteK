@@ -11,7 +11,7 @@
     "serve:prod": "ng serve --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "deploy": "netlify build && netlify deploy --prod",
+    "deploy": "",
     "serve:ssr:test": "node dist/test/server/server.mjs"
   },
   "private": true,
@@ -26,8 +26,6 @@
     "@angular/platform-server": "^20.0.0",
     "@angular/router": "^20.0.0",
     "@angular/ssr": "^20.0.0",
-    "@netlify/functions": "^4.1.4",
-    "@supabase/supabase-js": "^2.50.0",
     "bootstrap": "^5.3.6",
     "bootstrap-icons": "^1.13.1",
     "express": "^5.1.0",

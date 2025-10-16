@@ -1,16 +1,20 @@
 import { Context } from "@netlify/functions";
 import { supabase } from "./db.mjs";
+import { PubMedArticle } from "../../src/app/types/pubmedArticle";
 
 export default async (req: Request, context: Context) => {
   try {
     if (req.method === "POST") {
-      const body = await req.json();
+      //TODO: insert logic
+      const body: PubMedArticle[] = await req.json();
 
-      const supabaseResponse = await supabase
-        .from("pubmed_articles")
-        .insert(body);
+      const supabaseResponse = await supabase.rpc(
+        "bulk_insert_pubmed_articles",
+        { p_data: body }
+      );
 
       if (supabaseResponse.error) {
+        console.log(supabaseResponse);
         throw new Error(supabaseResponse.error.message);
       }
 
