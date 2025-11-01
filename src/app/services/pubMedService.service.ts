@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from "@angular/core";
 import { PubMedArticle } from "../types/pubmedArticle";
 import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { environment } from "@env/environment";
 
 @Injectable({
   providedIn: "root",
@@ -18,6 +18,6 @@ export class PubMedService {
   }
 
   createArticle(articles: PubMedArticle[]) {
-    return this.http.post("/.netlify/functions/articles", articles);
+    return this.http.post(`${environment.apiUrl}/articles`, articles);
   }
 }

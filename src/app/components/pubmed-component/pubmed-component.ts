@@ -293,13 +293,20 @@ export class PubmedComponent {
 
     if (authorsEl) {
       for (let [_, value] of authorsEl.entries()) {
+        const collectiveName =
+          value.querySelector("CollectiveName")?.textContent;
         const name = value.querySelector("ForeName")?.textContent;
         const lastname = value.querySelector("LastName")?.textContent;
         const orcid =
           value.querySelector('Identifier[Source="ORCID"]')?.textContent ??
           null;
         const affiliations = this.extractAffiliations(value);
-        authors.push({ name, lastname, orcid, affiliations });
+        authors.push({
+          name: collectiveName ? collectiveName : name,
+          lastname,
+          orcid,
+          affiliations,
+        });
       }
       return authors;
     } else return null;
