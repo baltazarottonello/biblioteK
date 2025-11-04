@@ -32,7 +32,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { concatMap, delay, from, map, of, switchMap } from "rxjs";
 
 @Component({
-  selector: "app-pubmed-component",
+  selector: "app-articles-component",
   imports: [
     FormsModule,
     MatFormFieldModule,
@@ -40,11 +40,11 @@ import { concatMap, delay, from, map, of, switchMap } from "rxjs";
     ReactiveFormsModule,
     MatButtonModule,
   ],
-  templateUrl: "./pubmed-component.html",
-  styleUrl: "./pubmed-component.scss",
+  templateUrl: "./articles-component.html",
+  styleUrl: "./articles-component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PubmedComponent {
+export class ArticlesComponent {
   pubmedService = inject(PubMedService);
   downloadCsvLink = viewChild<ElementRef>("downloadCsvLink");
   showDownloadCsvButton = signal(false);

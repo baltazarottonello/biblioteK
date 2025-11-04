@@ -1,10 +1,3 @@
-<!-- <label>PMID</label>
-<input #pmidInput />
-<button (click)="search(pmidInput.value)">Buscar</button>
-<div>
-  <p>Respuesta</p>
-  <p [innerHTML]="response()"></p>
-</div> -->
 <mat-sidenav-container [hasBackdrop]="true">
   <mat-sidenav-content>
     <button class="toggle-btn" matFab (click)="sideNav.toggle()">
@@ -13,6 +6,17 @@
     <router-outlet></router-outlet>
   </mat-sidenav-content>
   <mat-sidenav #sideNav>
-    <button matButton="elevated" routerLink="pubmed">Utilidades PubMed</button>
+    <div class="sidebar-container">
+      <div class="sidebar-options">
+        <button matButton="elevated" routerLink="">
+          <mat-icon
+            [style]="'width: fit-content; height: fit-content; font-size: 28px;margin:0;'"
+            >home</mat-icon
+          >
+        </button>
+        <button matButton="elevated" routerLink="articles">Artículos</button>
+      </div>
+      <div class="sidebar-profile"><app-profile-menu-component /></div>
+    </div>
   </mat-sidenav>
 </mat-sidenav-container>
