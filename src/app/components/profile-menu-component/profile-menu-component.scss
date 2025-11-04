@@ -1,0 +1,23 @@
+:host {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: start;
+  background-color: var(--mat-sys-surface-variant);
+  gap: 16px;
+  padding: 1rem;
+  border-radius: 16px;
+}
+
+.profile-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  height: fit-content;
+}
+
+.profile-name-container {
+  font-size: 1.2rem;
+  font-weight: 400;
+}
