@@ -21,3 +21,9 @@
   font-size: 1.2rem;
   font-weight: 400;
 }
+
+@media (max-width: 768px) {
+  .profile-name-container {
+    font-size: 0.8rem;
+  }
+}
