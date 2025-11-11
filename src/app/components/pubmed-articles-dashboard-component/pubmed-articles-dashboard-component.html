@@ -1,0 +1,111 @@
+<div class="searchbar-container">
+  <div class="search-icon-container">
+    <mat-icon>search</mat-icon>
+  </div>
+  <div class="searchbar">
+    <input
+      [(ngModel)]="query"
+      (input)="onInput($event)"
+      autocomplete="off"
+      id="pubmed-articles-searchbar-input"
+      type="text"
+      placeholder="Buscar por palabra clave (PMID, año, doi, etc.)"
+    />
+  </div>
+</div>
+
+@if(query){ @if(loading()){
+<div class="loading-spinner">
+  <mat-spinner [diameter]="30" [strokeWidth]="4"></mat-spinner>
+</div>
+}@else if(searchResults().data !== null){ @if(searchResults().data.length ===
+0){
+<p>No se encontraron resultados para "{{ query }}"</p>
+} @else {
+<div class="results-table-container">
+  <ng-container *ngTemplateOutlet="searchResultsTemplate"></ng-container>
+  <div class="pagination-container">
+    @if(currentPage() > 1){
+    <button
+      [disabled]="paginationButtonsDisabled()"
+      matButton
+      (click)="previousPage()"
+    >
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+    }
+    <div>{{ currentPage() }}</div>
+    @if(searchResults().hasMore){
+    <button
+      [disabled]="paginationButtonsDisabled()"
+      matButton
+      (click)="nextPage()"
+    >
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+    }
+  </div>
+</div>
+} } }@else {
+<div class="menu-container">
+  <div class="menu-option">
+    <h1>Importar</h1>
+    <p>Importar datos de un artículo desde PubMed usando el PMID</p>
+    <button matButton="elevated" routerLink="import">Ver más</button>
+  </div>
+  <div class="menu-option">
+    <h1>Artículos</h1>
+    <p>Consultar los artículos importados</p>
+    <button matButton="elevated">Ver más</button>
+  </div>
+  <div class="menu-option">
+    <h1>Autores</h1>
+    <p>Consultar los autores y sus afiliaciones</p>
+    <button matButton="elevated">Ver más</button>
+  </div>
+  <div class="menu-option">
+    <h1>Afiliaciones</h1>
+    <p>
+      Consultar las afiliaciones de los autores, crear grupos de afiliaciones,
+      etc.
+    </p>
+    <button matButton="elevated">Ver más</button>
+  </div>
+  <div class="menu-option">
+    <mat-icon
+      [style]="'display: flex; flex-grow: 1; width: 100%; justify-content: center; align-items: center; font-size: 70px;'"
+      fontSet="material-icons-round"
+      >add</mat-icon
+    >
+  </div>
+</div>
+}
+
+<ng-template #searchResultsTemplate>
+  <table mat-table [dataSource]="searchResults().data" class="results-table">
+    <ng-container matColumnDef="pmid">
+      <th mat-header-cell *matHeaderCellDef>PMID</th>
+      <td mat-cell *matCellDef="let article">{{ article.pmid }}</td>
+    </ng-container>
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef>Título</th>
+      <td mat-cell *matCellDef="let article">{{ article.title }}</td>
+    </ng-container>
+    <ng-container matColumnDef="journal">
+      <th mat-header-cell *matHeaderCellDef>Revista</th>
+      <td mat-cell *matCellDef="let article">{{ article.journal.title }}</td>
+    </ng-container>
+    <ng-container matColumnDef="authors">
+      <th mat-header-cell *matHeaderCellDef>Autores</th>
+      <td mat-cell *matCellDef="let article">
+        <button matButton (click)="openAuthorsDialog(article)">Ver</button>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="year">
+      <th mat-header-cell *matHeaderCellDef>Año</th>
+      <td mat-cell *matCellDef="let article">{{ article.year }}</td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+  </table>
+</ng-template>

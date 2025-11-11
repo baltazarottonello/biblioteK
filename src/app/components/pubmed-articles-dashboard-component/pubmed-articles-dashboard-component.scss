@@ -1,0 +1,114 @@
+@use "@mixins/mixins" as mixins;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  height: 100%;
+}
+
+.menu-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 625px;
+  flex-wrap: wrap;
+  gap: 25px;
+}
+
+.menu-option {
+  @include mixins.menu-option-type2();
+}
+
+.searchbar-container {
+  display: flex;
+  justify-content: start;
+  gap: 15px;
+  padding: 16px;
+  outline: 1px solid var(--mat-sys-primary);
+  border-radius: 15px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  width: auto;
+  width: 600px;
+}
+
+@media (max-width: 768px) {
+  .searchbar-container {
+    margin-top: 80px;
+    width: 300px;
+  }
+}
+
+.searchbar {
+  height: 30px;
+  width: 100%;
+}
+
+.search-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid white;
+  padding-right: 10px;
+}
+
+#pubmed-articles-searchbar-input {
+  border: none;
+  height: 100%;
+  width: 100%;
+  padding: 0 10px;
+  background-color: transparent;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--mat-sys-on-surface);
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.mat-column-pmid,
+.mat-column-title,
+.mat-column-journal,
+.mat-column-authors {
+  border-right: 1px solid var(--mat-sys-on-surface);
+  padding: 20px 20px;
+}
+
+.results-table-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+}
+
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 15px;
+}
+
+.pagination-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+
+  button {
+    mat-icon {
+      margin: 0;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .results-table-container {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+  }
+}
