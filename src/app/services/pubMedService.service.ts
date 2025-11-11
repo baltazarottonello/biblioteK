@@ -20,4 +20,10 @@ export class PubMedService {
   createArticle(articles: PubMedArticle[]) {
     return this.http.post(`${environment.apiUrl}/articles`, articles);
   }
+
+  searchTerm({ term, last = 0 }: any) {
+    return this.http.get(`${environment.apiUrl}/articles`, {
+      params: { term, last },
+    });
+  }
 }

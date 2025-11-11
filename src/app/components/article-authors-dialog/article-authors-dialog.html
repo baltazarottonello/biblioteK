@@ -1,0 +1,29 @@
+<div class="authors-table-container">
+  <table mat-table [dataSource]="data.article.authors" class="authors-table">
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Nombre</th>
+      <td mat-cell *matCellDef="let author">{{ author.name }}</td>
+    </ng-container>
+    <ng-container matColumnDef="lastname">
+      <th mat-header-cell *matHeaderCellDef>Apellido</th>
+      <td mat-cell *matCellDef="let author">{{ author.lastname }}</td>
+    </ng-container>
+    <ng-container matColumnDef="orcid">
+      <th mat-header-cell *matHeaderCellDef>ORCID</th>
+      <td mat-cell *matCellDef="let author">
+        @if(author.orcid){
+        <button disableRipple matButton="tonal">
+          <a
+            [style]="'text-decoration: none; color: inherit;'"
+            href="https://orcid.org/{{ author.orcid }}"
+            target="_blank"
+            >Link</a
+          >
+        </button>
+        }@else { N/A }
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+  </table>
+</div>

@@ -1,0 +1,25 @@
+:host {
+  max-height: 300px;
+}
+
+.authors-table {
+  padding: 1rem;
+  overflow: auto;
+  border: none;
+
+  th,
+  td {
+    text-align: center;
+  }
+}
+
+.authors-table-container {
+  max-height: 300px;
+  overflow-y: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+.authors-table-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}

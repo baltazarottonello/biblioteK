@@ -1,67 +1,19 @@
-<header></header>
-<div class="articles-section-container">
-  <section class="csv-section section">
-    <header>
-      @if(!csvUploaded()){
-      <h3>Cargar archivo .csv</h3>
-      } @else {
-      <h3>Archivo cargado</h3>
-      }
-    </header>
-    <div>
-      @if(!csvUploaded()){
-      <input (change)="readFile($event)" type="file" accept=".csv" />
-      } @else {
-      <button
-        [disabled]="loading()"
-        (click)="searchPmid(ids())"
-        matButton="elevated"
-      >
-        Buscar artículos
-      </button>
-      }
-    </div>
-
-    <h3>O convertir a .csv una lista de ID's</h3>
-    <mat-form-field>
-      <mat-label for="convertFileInput">Convertir a CSV</mat-label>
-
-      <input
-        [formControl]="toCsvFormControl"
-        matInput
-        #toCsvData
-        id="convertFileInput"
-      />
-      @if(toCsvFormControl.hasError("required")){
-      <mat-error>No hay datos</mat-error>
-      }
-    </mat-form-field>
-    @if(!csvConverted()){
-    <button matButton="elevated" (click)="toCsv(toCsvData.value)">
-      Convertir
-    </button>
-    }
-    <button
-      matButton="elevated"
-      [class.visible]="showDownloadCsvButton()"
-      class="hidden"
-      (click)="downloadCsv()"
+<div class="menu-container">
+  <div class="menu-option">
+    <h1>Lista PubMed</h1>
+    <p>Ver artículos importados de PubMed, consultas, metricas, etc.</p>
+    <button matButton="elevated" routerLink="pubmed">Ver más</button>
+  </div>
+  <div class="menu-option">
+    <h1>Base de pedidos</h1>
+    <p>Ver artículos solicitados a la biblioteca, consultas, metricas, etc.</p>
+    <button matButton="elevated" routerLink="orders">Ver más</button>
+  </div>
+  <div class="menu-option">
+    <mat-icon
+      [style]="'display: flex; flex-grow: 1; width: 100%; justify-content: center; align-items: center; font-size: 70px;'"
+      fontSet="material-icons-round"
+      >add</mat-icon
     >
-      <a #downloadCsvLink class="hidden"></a>
-      Descargar .csv
-    </button>
-  </section>
-  <section class="pmid-section section">
-    <header><h3>PMID</h3></header>
-    <mat-form-field>
-      <mat-label for="pmid">PMID</mat-label>
-      <input [formControl]="pmidFormControl" matInput #pmidInput id="pmid" />
-      @if(pmidFormControl.hasError('required')){
-      <mat-error>PMID obligatorio</mat-error>
-      }
-    </mat-form-field>
-    <button matButton="elevated" (click)="searchPmid(pmidInput.value)">
-      Buscar
-    </button>
-  </section>
+  </div>
 </div>
