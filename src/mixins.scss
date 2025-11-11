@@ -1,0 +1,16 @@
+@mixin menu-option-type2() {
+  border: 1px solid var(--mat-sys-inverse-primary);
+  padding: 15px;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 300px;
+  height: 200px;
+  gap: 1rem;
+  box-shadow: 3px 3px white;
+
+  > h1 {
+    font-weight: 400;
+  }
+}
